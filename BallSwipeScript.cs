@@ -80,9 +80,11 @@ public class BallSwipe : MonoBehaviour
         {
             if (touchControls.Touch.TouchPhase.phase.ToString().Equals("Started") && !touchStart)
             {
+                //initialize starting position with the current touch position
                 startingPos = touchPos;
                 startingPos.z = cam.transform.position.z;
                 startingPos = cam.ScreenToWorldPoint(startingPos);
+                //initialize starting time with the current time
                 startingTime = Time.time;
                 touchStart = true;
 
@@ -92,7 +94,6 @@ public class BallSwipe : MonoBehaviour
                 ball.velocity = Vector3.zero;
                 ball.isKinematic = true;
                 transform.position = initPosition;
-                transform.rotation = Quaternion.Euler(0f, 0f, 0f);
                 ballReleased = false;
                 fingerOut = false;
                 hitScore = false;
@@ -109,12 +110,15 @@ public class BallSwipe : MonoBehaviour
             touchStart = false;
             if (!ballReleased && fingerOut)
             {
+                //assign end position with the value of the touch position before lifting the finger
                 endPos = touchPos;
                 endPos.z = cam.transform.position.z;
                 endPos = cam.ScreenToWorldPoint(endPos);
+                //assign end time with the value of the time recorded before lifting the finger
                 endTime = Time.time;
-                
+                //time interval will be the difference of the end time and starting time
                 timeInterval = endTime - startingTime;
+                //the difference of the end position and the starting position is the direction of the ball
                 direction = endPos - startingPos;
                 
                 ball.isKinematic = false;
